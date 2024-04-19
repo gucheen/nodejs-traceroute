@@ -8,7 +8,7 @@
     "example": "ts-node example.ts",
     "lint": "eslint --fix src",
     "test": "jest",
-    "prepublishOnly": "build"
+    "prepublishOnly": "yarn build"
   },
   "author": "Zulhilmi Mohamed Zainuddin",
   "license": "MIT",
