@@ -2,7 +2,8 @@ import events from 'events';
 import readline from 'readline';
 import validator from 'validator';
 
-import { spawn } from 'child_process';
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
+import { Readable } from 'stream';
 
 export interface Hop {
     hop: number;
@@ -13,8 +14,33 @@ export interface Hop {
 }
 
 export abstract class Process extends events.EventEmitter {
+    process: ChildProcessWithoutNullStreams|null = null
+
     constructor(private command: string, private args: string[]) {
         super();
+    }
+
+    private readProcessStd(input: Readable) {
+        let isDestinationCaptured = false
+        readline.createInterface({
+            input,
+            terminal: false
+        })
+        .on('line', (line) => {
+            if (!isDestinationCaptured) {
+                const destination = this.parseDestination(line);
+                if (destination !== null) {
+                    this.emit('destination', destination);
+
+                    isDestinationCaptured = true;
+                }
+            }
+
+            const hop = this.parseHop(line);
+            if (hop !== null) {
+                this.emit('hop', hop);
+            }
+        });
     }
 
     public trace(domainName: string): void {
@@ -24,34 +50,23 @@ export abstract class Process extends events.EventEmitter {
 
         this.args.push(domainName);
 
-        const process = spawn(this.command, this.args);
-        process.on('close', (code) => {
+        this.process = spawn(this.command, this.args);
+        this.process.on('close', (code) => {
             this.emit('close', code);
         });
 
-        this.emit('pid', process.pid);
+        this.emit('pid', this.process.pid);
 
-        let isDestinationCaptured = false;
-        if (process.pid) {
-            readline.createInterface({
-                    input: process.stdout,
-                    terminal: false
-                })
-                .on('line', (line) => {
-                    if (!isDestinationCaptured) {
-                        const destination = this.parseDestination(line);
-                        if (destination !== null) {
-                            this.emit('destination', destination);
+        if (this.process.pid) {
+            this.readProcessStd(this.process.stdout)
+            this.readProcessStd(this.process.stderr)
+        }
+    }
 
-                            isDestinationCaptured = true;
-                        }
-                    }
-
-                    const hop = this.parseHop(line);
-                    if (hop !== null) {
-                        this.emit('hop', hop);
-                    }
-                });
+    public kill(signal?: NodeJS.Signals | number) {
+        if (this.process) {
+            this.process.kill(signal)
+            this.removeAllListeners()
         }
     }
 
