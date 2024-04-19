@@ -26,13 +26,13 @@ describe('Traceroute', () => {
                 wait();
             });
 
-        tracer.trace('github.com');
+        tracer.trace('example.com');
     }, 60000);
 
     it('should exit trace by calling kill method', (done) => {
         const tracer = new Traceroute();
 
-        tracer.trace('github.com');
+        tracer.trace('example.com');
 
         setTimeout(() => {
             tracer.kill()
