@@ -1,6 +1,6 @@
 {
   "name": "@gucheen/nodejs-traceroute",
-  "version": "3.0.0-2",
+  "version": "3.0.0",
   "description": "Node.js wrapper around tracert and traceroute process",
   "main": "lib/index.js",
   "scripts": {
