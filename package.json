@@ -7,7 +7,8 @@
     "build": "tsc",
     "example": "ts-node example.ts",
     "lint": "eslint --fix src",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "build"
   },
   "author": "Zulhilmi Mohamed Zainuddin",
   "license": "MIT",
