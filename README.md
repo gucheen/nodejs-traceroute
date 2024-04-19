@@ -34,6 +34,11 @@ try {
         });
 
     tracer.trace('github.com');
+
+    // and you can terminate traceroute by calling `kill` method
+    setTimeout(() => {
+        tracer.kill()
+    }, 5000)
 } catch (ex) {
     console.log(ex);
 }
