@@ -1,12 +1,12 @@
-# nodejs-traceroute [![Build Status](https://travis-ci.org/zulhilmizainuddin/nodejs-traceroute.svg?branch=master)](https://travis-ci.org/zulhilmizainuddin/nodejs-traceroute) [![Code Climate](https://codeclimate.com/github/zulhilmizainuddin/nodejs-traceroute/badges/gpa.svg)](https://codeclimate.com/github/zulhilmizainuddin/nodejs-traceroute)
+# nodejs-traceroute ![Build Status](https://github.com/gucheen/nodejs-traceroute/actions/workflows/node.js.yml/badge.svg)
 
-[![NPM](https://nodei.co/npm/nodejs-traceroute.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/nodejs-traceroute/)
+[![NPM](https://nodei.co/npm/@gucheen/nodejs-traceroute.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/@gucheen/nodejs-traceroute)
 
 Node.js wrapper around tracert and traceroute process
 
 ## Install
 
-    npm install --save nodejs-traceroute
+    npm install --save @gucheen/nodejs-traceroute
 
 ## Force IPv4 or IPv6
 By default, the domain name given will be automatically resolved. Explicitly force IPv4 or IPv6 tracerouting by passing either `ipv4` or `ipv6` to the constructor.
