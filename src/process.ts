@@ -65,8 +65,9 @@ export abstract class Process extends events.EventEmitter {
 
     public kill(signal?: NodeJS.Signals | number) {
         if (this.process) {
-            this.process.kill(signal)
+            const result = this.process.kill(signal)
             this.removeAllListeners()
+            return result
         }
     }
 
