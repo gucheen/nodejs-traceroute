@@ -35,8 +35,9 @@ describe('Traceroute', () => {
         tracer.trace('github.com');
 
         setTimeout(() => {
-            tracer.kill()
+            const killResult = tracer.kill()
             expect(tracer.process?.killed).toBeTruthy()
+            expect(killResult).toBeTruthy()
             done()
         }, 5000)
     }, 10000);
