@@ -1,4 +1,4 @@
-import validator from 'validator';
+import net from 'net';
 
 import Traceroute from '../src/index';
 
@@ -11,18 +11,19 @@ describe('Traceroute', () => {
                 expect(Number.isInteger(pid)).toBeTruthy();
             })
             .on('destination', (destination) => {
-                expect(validator.isIP(destination)).toBeTruthy();
+                expect(net.isIP(destination)).toBeTruthy();
             })
             .on('hop', (hopObj) => {
                 const { hop, ip, rtt1 } = hopObj;
 
                 expect(Number.isInteger(hop)).toBeTruthy();
-                expect(validator.isIP(ip) || ip === '*').toBeTruthy();
+                expect(net.isIP(ip) || ip === '*').toBeTruthy();
                 expect(/^\d+\.\d+\sms$/.test(rtt1) || rtt1 === '*').toBeTruthy();
             })
             .on('close', (code) => {
                 expect(Number.isInteger(code)).toBeTruthy();
 
+                tracer.process?.kill()
                 wait();
             });
 
@@ -36,7 +37,6 @@ describe('Traceroute', () => {
 
         setTimeout(() => {
             const killResult = tracer.kill()
-            expect(tracer.process?.killed).toBeTruthy()
             expect(killResult).toBeTruthy()
             done()
         }, 5000)

@@ -1,6 +1,7 @@
 import events from 'events';
 import readline from 'readline';
-import validator from 'validator';
+import net from 'net';
+import isFQDN from 'is-fqdn';
 
 import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { Readable } from 'stream';
@@ -72,7 +73,8 @@ export abstract class Process extends events.EventEmitter {
     }
 
     private isValidDomainName(domainName: string): boolean {
-        return validator.isFQDN(domainName + '') || validator.isIP(domainName + '');
+        const ipTestResult = net.isIP(domainName + '')
+        return isFQDN(domainName + '') || ipTestResult === 6 || ipTestResult === 4;
     }
 
     abstract parseDestination(data: string): string | null;
