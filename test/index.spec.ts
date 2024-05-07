@@ -29,7 +29,9 @@ describe('Traceroute', () => {
 
         tracer.trace('example.com');
     }, 60000);
+});
 
+describe('Traceroute', () => {
     it('should exit trace by calling kill method', (done) => {
         const tracer = new Traceroute();
 
@@ -41,4 +43,4 @@ describe('Traceroute', () => {
             done()
         }, 5000)
     }, 10000);
-});
+})
